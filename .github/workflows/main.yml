@@ -1,0 +1,100 @@
+name: MSBuild
+on:
+  push:
+    branches: [ master, Development ]
+  pull_request:
+    branches: [ master, Development ]
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Setup Nuget.exe
+      uses: warrenbuckley/Setup-Nuget@v1
+    - name: Restore packages
+      run: nuget restore Source/CombatExtended.sln
+    - name: Setup MSBuild.exe
+      uses: warrenbuckley/Setup-MSBuild@v1
+    - name: Build with MSBuild
+      run: msbuild Source/CombatExtended.sln -p:Configuration=Release -p:OutputPath=..\..\CombatExtended\Assemblies\
+    - name: Copy Directory
+      uses: MadaraUchiha/copy-action@0.0.1
+      with:
+        # Source file
+        source: About
+        # Target file
+        target: CombatExtended
+    - name: Copy Directory
+      uses: MadaraUchiha/copy-action@0.0.1
+      with:
+        # Source file
+        source: Defs
+        # Target file
+        target: CombatExtended
+    - name: Copy Directory
+      uses: MadaraUchiha/copy-action@0.0.1
+      with:
+        # Source file
+        source: Languages
+        # Target file
+        target: CombatExtended
+    - name: Copy Directory
+      uses: MadaraUchiha/copy-action@0.0.1
+      with:
+        # Source file
+        source: Media
+        # Target file
+        target: CombatExtended
+    - name: Copy Directory
+      uses: MadaraUchiha/copy-action@0.0.1
+      with:
+        # Source file
+        source: Patches
+        # Target file
+        target: CombatExtended
+    - name: Copy Directory
+      uses: MadaraUchiha/copy-action@0.0.1
+      with:
+        # Source file
+        source: Royalty
+        # Target file
+        target: CombatExtended
+    - name: Copy Directory
+      uses: MadaraUchiha/copy-action@0.0.1
+      with:
+        # Source file
+        source: Sounds
+        # Target file
+        target: CombatExtended
+    - name: Copy Directory
+      uses: MadaraUchiha/copy-action@0.0.1
+      with:
+        # Source file
+        source: Textures
+        # Target file
+        target: CombatExtended
+    - name: Copy Directory
+      uses: MadaraUchiha/copy-action@0.0.1
+      with:
+        # Source file
+        source: LoadFolders.xml
+        # Target file
+        target: CombatExtended
+    - name: Copy Directory
+      uses: MadaraUchiha/copy-action@0.0.1
+      with:
+        # Source file
+        source: SupportedThirdPartyMods.md
+        # Target file
+        target: CombatExtended
+
+    - name: Upload artifact
+      uses: actions/upload-artifact@v1.0.0
+      with:
+        # Artifact name
+        name: CombatExtended
+        # Directory containing files to upload
+        path: CombatExtended
+
